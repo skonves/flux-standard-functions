@@ -1,4 +1,11 @@
-export { Definition, Index, Patch, Primative, Rule } from './types';
+export {
+  Definition,
+  DELETE_VALUE,
+  Index,
+  Patch,
+  Primative,
+  Rule,
+} from './types';
 
 export { set } from './functions/set';
 export { setEach } from './functions/set-each';

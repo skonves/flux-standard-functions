@@ -7,3 +7,5 @@ export interface Definition<T> {
 export type Index<T> = { [key: string]: T };
 export type Patch<T> = { [K in keyof T]?: any };
 export type Rule = any;
+
+export const DELETE_VALUE = Symbol('DELETE_VALUE');
