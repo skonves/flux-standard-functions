@@ -1,5 +1,5 @@
 import { Rule } from '.';
-import { Definition, Primative } from './types';
+import { Definition, Primitive } from './types';
 
 export function key(): Rule {}
 export function immutable(rule?: Rule): Rule {}

@@ -3,7 +3,7 @@ export {
   DELETE_VALUE,
   Index,
   Patch,
-  Primative,
+  Primitive,
   Rule,
 } from './types';
 

@@ -1,7 +1,7 @@
-import { Primative, Definition, Index, Patch } from '..';
+import { Primitive, Definition, Index, Patch } from '..';
 import { patch } from './patch';
 
-export function set<T extends Primative>(target: T[], payload: T): T[];
+export function set<T extends Primitive>(target: T[], payload: T): T[];
 export function set<T>(
   target: T,
   key: keyof T,
@@ -23,7 +23,7 @@ export function set<T>(a, b, c?, d?): T | T[] | Index<T> {
   return setInIndex(a, b, c);
 }
 
-function setInPrimitiveArray<T extends Primative>(
+function setInPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T,
 ): T[] {

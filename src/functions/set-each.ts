@@ -1,6 +1,6 @@
-import { Primative, Index, Definition } from '..';
+import { Primitive, Index, Definition } from '..';
 
-export function setEach<T extends Primative>(target: T[], payload: T): T[];
+export function setEach<T extends Primitive>(target: T[], payload: T): T[];
 
 export function setEach<T>(
   target: Index<T>,
@@ -24,7 +24,7 @@ export function setEach<T>(a, b, c?): T[] | Index<T> {
   return setFromIndex(a, b, c);
 }
 
-function setInPrimitiveArray<T extends Primative>(
+function setInPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T,
 ): T[] {

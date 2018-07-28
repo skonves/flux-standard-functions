@@ -1,4 +1,4 @@
-export type Primative = Symbol | string | number | boolean;
+export type Primitive = Symbol | string | number | boolean;
 export interface Definition<T> {
   getPayload(payload: Patch<T>): T;
   getPatch(payload: Patch<T>): Patch<T>;
