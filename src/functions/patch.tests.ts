@@ -21,7 +21,7 @@ describe('patch', () => {
         value: 7,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -50,7 +50,7 @@ describe('patch', () => {
         value: 18,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -79,7 +79,7 @@ describe('patch', () => {
         value: DELETE_VALUE,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -107,7 +107,7 @@ describe('patch', () => {
         id: DELETE_VALUE,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
       };
@@ -142,7 +142,7 @@ describe('patch', () => {
         value: 7,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -186,7 +186,7 @@ describe('patch', () => {
         value: 18,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -230,7 +230,7 @@ describe('patch', () => {
         value: DELETE_VALUE,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
       };
@@ -273,7 +273,7 @@ describe('patch', () => {
         value: DELETE_VALUE,
       };
       const definition: Definition<TestItem> = {
-        getPayload: x => x,
+        getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
       };
