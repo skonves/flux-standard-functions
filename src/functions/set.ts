@@ -1,10 +1,11 @@
-import { Primative, Definition, Index } from '..';
+import { Primative, Definition, Index, Patch } from '..';
+import { patch } from './patch';
 
 export function set<T extends Primative>(target: T[], payload: T): T[];
 export function set<T>(
   target: T,
-  key: string,
-  payload: Primative,
+  key: keyof T,
+  payload: any,
   definition: Definition<T>,
 ): T;
 export function set<T>(
@@ -26,16 +27,16 @@ function setInPrimitiveArray<T extends Primative>(
   target: T[],
   payload: T,
 ): T[] {
-  throw new Error('method not implemented');
+  return Array.from(new Set(target).add(payload));
 }
 
 function setOnObject<T>(
   target: T,
-  key: string,
-  payload: Primative,
+  key: keyof T,
+  payload: any,
   definition: Definition<T>,
 ): T {
-  throw new Error('method not implemented');
+  return patch(target, { [key]: payload } as Patch<T>, definition);
 }
 
 function setInIndex<T>(
@@ -43,5 +44,13 @@ function setInIndex<T>(
   payload: T,
   definition: Definition<T>,
 ): Index<T> {
-  throw new Error('method not implemented');
+  if (!payload) return target;
+
+  const validItem = definition.getPayload(payload);
+  if (!validItem) return target;
+
+  const key = definition.getKey(payload);
+  if (!key) return target;
+
+  return { ...target, [key]: validItem };
 }
