@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Definition, Patch, set, DELETE_VALUE, Index } from '..';
+import { Definition, set, Index } from '..';
 
 type TestItem = {
   id: string;
