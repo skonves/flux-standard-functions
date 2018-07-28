@@ -1,4 +1,5 @@
 import { Definition, Index, Patch } from '..';
+import { DELETE_VALUE } from '../types';
 
 export function patch<T>(
   target: T,
@@ -24,7 +25,21 @@ function patchObject<T>(
   payload: Patch<T>,
   definition: Definition<T>,
 ): T {
-  throw new Error('method not implemented');
+  const patchValue = definition.getPatch(payload);
+
+  if (!patchValue) return target;
+
+  const x = { ...(target as any), ...(patchValue as any) };
+
+  return Object.keys(x)
+    .filter(key => x[key] !== DELETE_VALUE)
+    .reduce(
+      (acc, key) => ({
+        ...(acc as any),
+        [key]: x[key],
+      }),
+      {},
+    );
 }
 
 function patchIndex<T>(
@@ -32,6 +47,14 @@ function patchIndex<T>(
   key: string,
   payload: Patch<T>,
   definition: Definition<T>,
-): T {
-  throw new Error('method not implemented');
+): Index<T> {
+  const item = target[key];
+
+  if (!item) return target;
+
+  const patchedItem = patch(item, payload, definition);
+
+  if (item === patchedItem) return target;
+
+  return { ...target, [key]: patchedItem };
 }
