@@ -1,4 +1,5 @@
 import { Definition, Index, Patch } from '..';
+import { patch } from './patch';
 
 export function patchEach<T>(
   target: Index<T>,
@@ -23,7 +24,20 @@ function patchEachFromArray<T>(
   payload: Patch<T>[],
   definition: Definition<T>,
 ): Index<T> {
-  throw new Error('method not implemented');
+  if (!payload.length) return target;
+
+  return payload.reduce((acc, item) => {
+    const key = definition.getKey(item);
+    if (!key) return acc;
+
+    const existingItem = target[key];
+    if (!existingItem) return acc;
+
+    const patchedItem = patch(existingItem, item, definition);
+    if (patchedItem === existingItem) return acc;
+
+    return { ...(acc as any), [key]: patchedItem };
+  }, target);
 }
 
 function patchEachFromMap<T>(
@@ -31,5 +45,18 @@ function patchEachFromMap<T>(
   payload: { [key: string]: Patch<T> },
   definition: Definition<T>,
 ): Index<T> {
-  throw new Error('method not implemented');
+  if (!payload) return target;
+
+  const keys = Object.keys(payload);
+  if (!keys) return target;
+
+  return keys.reduce((acc, key) => {
+    const existingItem = target[key];
+    if (!existingItem) return acc;
+
+    const patchedItem = patch(existingItem, payload[key], definition);
+    if (patchedItem === existingItem) return acc;
+
+    return { ...(acc as any), [key]: patchedItem };
+  }, target);
 }
