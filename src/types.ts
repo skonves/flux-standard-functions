@@ -4,7 +4,7 @@ export interface Definition<T> {
   getPatch(payload: Patch<T>): Patch<T>;
   getKey(payload: Patch<T>): string;
 }
-export type Index<T> = { [key: string]: T };
+export type Index<T> = { [key: string]: T } | { [key: number]: T };
 export type Patch<T> = { [K in keyof T]?: any };
 export type Rule = any;
 

@@ -3,7 +3,7 @@ import { DELETE_VALUE, Patch } from '../types';
 
 export function unset<T extends Primitive>(target: T[], payload: T): T[];
 export function unset<T>(target: T, key: keyof T, definition: Definition<T>): T;
-export function unset<T>(target: Index<T>, key: string): Index<T>;
+export function unset<T>(target: Index<T>, key: string | number): Index<T>;
 export function unset<T>(a, b, c?): T | T[] | Index<T> {
   if (Array.isArray(a)) {
     return unsetFromPrimitiveArray(a, b);

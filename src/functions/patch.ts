@@ -8,7 +8,7 @@ export function patch<T>(
 ): T;
 export function patch<T>(
   target: Index<T>,
-  key: string,
+  key: string | number,
   payload: Patch<T>,
   definition: Definition<T>,
 ): Index<T>;
@@ -44,7 +44,7 @@ function patchObject<T>(
 
 function patchIndex<T>(
   target: Index<T>,
-  key: string,
+  key: string | number,
   payload: Patch<T>,
   definition: Definition<T>,
 ): Index<T> {
