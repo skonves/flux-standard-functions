@@ -13,9 +13,25 @@ function unsetFromPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T[],
 ): T[] {
-  throw new Error('method not implemented');
+  const set = new Set(target);
+
+  let removed = false;
+
+  for (const item of payload) {
+    removed = set.delete(item) || removed;
+  }
+
+  return removed ? Array.from(set) : target;
 }
 
 function unsetFromIndex<T>(target: Index<T>, keys: string[]): Index<T> {
-  throw new Error('method not implemented');
+  const originalKeys = Object.keys(target);
+
+  const set = new Set(keys);
+
+  const finalKeys = originalKeys.filter(key => !set.has(key));
+
+  if (finalKeys.length === originalKeys.length) return target;
+
+  return finalKeys.reduce((acc, key) => ({ ...acc, [key]: target[key] }), {});
 }
