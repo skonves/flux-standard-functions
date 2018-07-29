@@ -20,8 +20,7 @@ function unsetFromPrimitiveArray<T extends Primitive>(
   payload: T,
 ): T[] {
   const set = new Set(target);
-  set.delete(payload);
-  return Array.from(set);
+  return set.delete(payload) ? Array.from(set) : target;
 }
 
 function unsetFromObject<T>(
@@ -29,6 +28,8 @@ function unsetFromObject<T>(
   key: keyof T,
   definition: Definition<T>,
 ): T {
+  if (typeof target[key] === 'undefined') return target;
+
   return patch(target, { [key]: DELETE_VALUE } as Patch<T>, definition);
 }
 
