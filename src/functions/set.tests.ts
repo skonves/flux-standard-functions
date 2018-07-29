@@ -22,7 +22,7 @@ describe('set', () => {
       expect(result).to.have.members([1, 2, 3, 4]);
     });
 
-    it('Does not add an existing value', () => {
+    it('No-ops when value alread exists', () => {
       // ARRANGE
       const target = [1, 2, 3];
       const payload = 3;
@@ -32,6 +32,7 @@ describe('set', () => {
 
       // ASSERT
       expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
     });
   });
 
@@ -112,6 +113,7 @@ describe('set', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 
@@ -220,6 +222,7 @@ describe('set', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when getPayload returns falsy', () => {
@@ -253,6 +256,7 @@ describe('set', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when getId returns falsy', () => {
@@ -286,6 +290,7 @@ describe('set', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 });

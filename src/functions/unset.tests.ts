@@ -33,6 +33,7 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
     });
   });
 
@@ -83,6 +84,7 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops if getPatch returns falsy', () => {
@@ -105,6 +107,7 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 
@@ -160,6 +163,7 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 });

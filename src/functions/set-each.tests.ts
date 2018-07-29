@@ -22,7 +22,7 @@ describe('setEach', () => {
       expect(result).to.have.members([1, 2, 3, 4, 5]);
     });
 
-    it('Does not add an existing value', () => {
+    it('No-ops when adding existing values', () => {
       // ARRANGE
       const target = [1, 2, 3];
       const payload = [2, 3];
@@ -32,6 +32,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
     });
   });
 
@@ -152,6 +153,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when getPayload returns falsy', () => {
@@ -187,6 +189,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 
@@ -307,6 +310,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when getKey does not match payload key', () => {
@@ -342,6 +346,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when getPayload returns falsy', () => {
@@ -377,6 +382,7 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 });
