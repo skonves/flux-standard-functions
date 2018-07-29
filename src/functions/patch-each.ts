@@ -8,7 +8,7 @@ export function patchEach<T>(
 ): Index<T>;
 export function patchEach<T>(
   target: Index<T>,
-  payload: { [key: string]: Patch<T> },
+  payload: Index<Patch<T>>,
   definition: Definition<T>,
 ): Index<T>;
 export function patchEach<T>(a, b, c?): Index<T> {
@@ -42,7 +42,7 @@ function patchEachFromArray<T>(
 
 function patchEachFromMap<T>(
   target: Index<T>,
-  payload: { [key: string]: Patch<T> },
+  payload: Index<Patch<T>>,
   definition: Definition<T>,
 ): Index<T> {
   if (!payload) return target;

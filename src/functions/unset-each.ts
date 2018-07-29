@@ -1,7 +1,10 @@
 import { Index, Primitive } from '..';
 
 export function unsetEach<T extends Primitive>(target: T[], payload: T[]): T[];
-export function unsetEach<T>(target: Index<T>, keys: string[]): Index<T>;
+export function unsetEach<T>(
+  target: Index<T>,
+  keys: (string | number)[],
+): Index<T>;
 export function unsetEach<T>(a, b): T[] | Index<T> {
   if (Array.isArray(a)) {
     return unsetFromPrimitiveArray(a, b);
@@ -24,7 +27,10 @@ function unsetFromPrimitiveArray<T extends Primitive>(
   return removed ? Array.from(set) : target;
 }
 
-function unsetFromIndex<T>(target: Index<T>, keys: string[]): Index<T> {
+function unsetFromIndex<T>(
+  target: Index<T>,
+  keys: (string | number)[],
+): Index<T> {
   const originalKeys = Object.keys(target);
 
   const set = new Set(keys);
