@@ -28,7 +28,18 @@ function setInPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T[],
 ): T[] {
-  return Array.from(new Set([...target, ...payload]));
+  const set = new Set(target);
+
+  let added = false;
+
+  for (const value of payload) {
+    if (!set.has(value)) {
+      set.add(value);
+      added = true;
+    }
+  }
+
+  return added ? Array.from(set) : target;
 }
 
 function setFromArray<T>(
