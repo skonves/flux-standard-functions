@@ -1,7 +1,8 @@
-import { Primitive, Definition, Index } from '..';
+import { Primitive, Definition, Index, patch } from '..';
+import { DELETE_VALUE, Patch } from '../types';
 
 export function unset<T extends Primitive>(target: T[], payload: T): T[];
-export function unset<T>(target: T, key: string, definition: Definition<T>): T;
+export function unset<T>(target: T, key: keyof T, definition: Definition<T>): T;
 export function unset<T>(target: Index<T>, key: string): Index<T>;
 export function unset<T>(a, b, c?): T | T[] | Index<T> {
   if (Array.isArray(a)) {
@@ -18,17 +19,23 @@ function unsetFromPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T,
 ): T[] {
-  throw new Error('method not implemented');
+  const set = new Set(target);
+  set.delete(payload);
+  return Array.from(set);
 }
 
 function unsetFromObject<T>(
   target: T,
-  key: string,
+  key: keyof T,
   definition: Definition<T>,
 ): T {
-  throw new Error('method not implemented');
+  return patch(target, { [key]: DELETE_VALUE } as Patch<T>, definition);
 }
 
 function unsetFromIndex<T>(target: Index<T>, key: string): Index<T> {
-  throw new Error('method not implemented');
+  if (!target[key]) return target;
+
+  const { [key]: removed, ...rest } = target;
+
+  return rest;
 }
