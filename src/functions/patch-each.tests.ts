@@ -167,6 +167,7 @@ describe('patch-each', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when patch is falsy', () => {
@@ -201,6 +202,7 @@ describe('patch-each', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 
@@ -353,6 +355,7 @@ describe('patch-each', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when payload is falsy', () => {
@@ -382,6 +385,7 @@ describe('patch-each', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when patch is falsy', () => {
@@ -412,6 +416,7 @@ describe('patch-each', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 });

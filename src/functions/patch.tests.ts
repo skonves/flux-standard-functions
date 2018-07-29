@@ -119,6 +119,7 @@ describe('patch', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 
@@ -285,6 +286,7 @@ describe('patch', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
   });
 });
