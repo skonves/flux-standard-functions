@@ -56,6 +56,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -100,6 +101,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -144,6 +146,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => null,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -180,6 +183,7 @@ describe('setEach', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -213,6 +217,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -257,6 +262,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -301,6 +307,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => null,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -337,6 +344,7 @@ describe('setEach', () => {
         getPayload: x => x as TestItem,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -373,6 +381,7 @@ describe('setEach', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };

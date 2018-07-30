@@ -50,6 +50,7 @@ describe('unset', () => {
         getPayload: x => null,
         getPatch: x => ({ [key]: DELETE_VALUE }),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: TestItem = {
@@ -75,6 +76,7 @@ describe('unset', () => {
         getPayload: x => null,
         getPatch: x => ({ [key]: DELETE_VALUE }),
         getKey: x => null,
+        getDefinitions: key => null,
       };
 
       const expected: TestItem = { ...target };
@@ -98,6 +100,7 @@ describe('unset', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => null,
+        getDefinitions: key => null,
       };
 
       const expected: TestItem = { ...target };

@@ -3,6 +3,12 @@ export interface Definition<T> {
   getPayload(payload: Patch<T>): T;
   getPatch(payload: Patch<T>): Patch<T>;
   getKey(payload: Patch<T>): string;
+  getDefinitions<TChild>(
+    key: keyof T,
+  ): {
+    index?: Definition<TChild>;
+    object?: Definition<TChild>;
+  };
 }
 export type Index<T> = { [key: string]: T } | { [key: number]: T };
 export type Patch<T> = { [K in keyof T]?: any };
