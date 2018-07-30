@@ -32,6 +32,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => (x.id === 'a' ? { value: 7 } : null),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -76,6 +77,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => (x.id === 'a' ? { value: 18 } : null),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -120,6 +122,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => (x.id === 'a' ? { value: DELETE_VALUE } : null),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -158,6 +161,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -193,6 +197,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -226,6 +231,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -267,6 +273,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -308,6 +315,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => ({ value: x.value }),
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = {
@@ -346,6 +354,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -376,6 +385,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -407,6 +417,7 @@ describe('patch-each', () => {
         getPayload: x => null,
         getPatch: x => null,
         getKey: x => x.id,
+        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
