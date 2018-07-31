@@ -16,7 +16,7 @@ export function patchEach<T>(a, b, c?): Index<T> {
     return patchEachFromArray(a, b, c);
   }
 
-  return patchEachFromMap(a, b, c);
+  return patchEachFromIndex(a, b, c);
 }
 
 function patchEachFromArray<T>(
@@ -40,7 +40,7 @@ function patchEachFromArray<T>(
   }, target);
 }
 
-function patchEachFromMap<T>(
+function patchEachFromIndex<T>(
   target: Index<T>,
   payload: Index<Patch<T>>,
   definition: Definition<T>,

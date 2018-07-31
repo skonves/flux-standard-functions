@@ -282,7 +282,7 @@ describe('patch-each', () => {
     });
   });
 
-  describe('from map', () => {
+  describe('from index', () => {
     it('Adds new values', () => {
       // ARRANGE
       const target: Index<TestItem> = {
