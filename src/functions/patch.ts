@@ -1,5 +1,7 @@
 import { Definition, Index, Patch } from '..';
-import { DELETE_VALUE } from '../types';
+import { DELETE_VALUE, Primitive } from '../types';
+import { patchEach } from './patch-each';
+import { setEach } from './set-each';
 
 export function patch<T>(
   target: T,
@@ -29,17 +31,100 @@ function patchObject<T>(
 
   if (!patchValue) return target;
 
-  const x = { ...(target as any), ...(patchValue as any) };
+  let patched = false;
+  const result: T = { ...(target as any) };
 
-  return Object.keys(x)
-    .filter(key => x[key] !== DELETE_VALUE)
-    .reduce(
-      (acc, key) => ({
-        ...(acc as any),
-        [key]: x[key],
-      }),
-      {},
-    );
+  for (const key in patchValue) {
+    const hasExistingValue = typeof result[key] !== 'undefined';
+    if (
+      target[key] === patchValue[key] ||
+      (patchValue[key] === DELETE_VALUE && !hasExistingValue)
+    ) {
+      continue;
+    }
+    if (patchValue[key] === DELETE_VALUE && hasExistingValue) {
+      delete result[key];
+      patched = true;
+    } else {
+      const childDefinitions = definition.getDefinitions(key);
+
+      if (childDefinitions && childDefinitions.index) {
+        if (hasExistingValue) {
+          const originalValue = result[key] as any;
+          const childPatch = patchValue[key];
+
+          const newValue = patchEach(
+            originalValue,
+            childPatch,
+            childDefinitions.index,
+          );
+          if (newValue !== originalValue) {
+            result[key] = newValue as any;
+            patched = true;
+          }
+        } else {
+          const originalValue = {};
+          const childPatch = patchValue[key];
+
+          const newValue = patchEach(
+            originalValue,
+            childPatch,
+            childDefinitions.index,
+          );
+
+          if (newValue !== originalValue) {
+            result[key] = newValue as any;
+            patched = true;
+          }
+        }
+      } else if (childDefinitions && childDefinitions.object) {
+        if (hasExistingValue) {
+          const originalValue = result[key];
+          const childPatch = patchValue[key];
+
+          const newValue = patch(
+            originalValue,
+            childPatch,
+            childDefinitions.object,
+          );
+
+          if (newValue !== originalValue) {
+            result[key] = newValue;
+            patched = true;
+          }
+        } else {
+          const childObject = childDefinitions.object.getPayload(
+            patchValue[key],
+          );
+
+          if (childObject) {
+            result[key] = childObject;
+            patched = true;
+          }
+        }
+      } else if (childDefinitions && childDefinitions.isArray) {
+        if (hasExistingValue) {
+          const originalValue = result[key] as any;
+          const childPatch = patchValue[key];
+
+          const newValue = setEach(originalValue, childPatch) as any;
+
+          if (newValue !== originalValue) {
+            result[key] = newValue;
+            patched = true;
+          }
+        } else {
+          result[key] = patchValue[key];
+          patched = true;
+        }
+      } else {
+        result[key] = patchValue[key];
+        patched = true;
+      }
+    }
+  }
+
+  return patched ? result : target;
 }
 
 function patchIndex<T>(
