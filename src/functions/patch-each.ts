@@ -52,7 +52,12 @@ function patchEachFromMap<T>(
 
   return keys.reduce((acc, key) => {
     const existingItem = target[key];
-    if (!existingItem) return acc;
+    if (!existingItem) {
+      const newItem = definition.getPayload(payload[key]);
+      if (!newItem) return acc;
+
+      return { ...(acc as any), [key]: newItem };
+    }
 
     const patchedItem = patch(existingItem, payload[key], definition);
     if (patchedItem === existingItem) return acc;
