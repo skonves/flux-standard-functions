@@ -19,8 +19,8 @@ type TestChildItem = {
 };
 
 describe('patch', () => {
-  describe('object', () => {
-    describe('primitive value', () => {
+  describe('target object', () => {
+    describe('with primitive property value', () => {
       it('Adds a new value', () => {
         // ARRANGE
         const target: TestItem = {
@@ -161,7 +161,7 @@ describe('patch', () => {
       });
     });
 
-    describe('object value', () => {
+    describe('with object property value', () => {
       it('Adds a new object', () => {
         // ARRANGE
         const target: TestItem = {
@@ -371,7 +371,7 @@ describe('patch', () => {
       });
     });
 
-    describe('index value', () => {
+    describe('with index property value', () => {
       it('Adds a new index', () => {
         // ARRANGE
         const target: TestItem = {
@@ -595,7 +595,7 @@ describe('patch', () => {
       });
     });
 
-    describe('primitive array', () => {
+    describe('with primitive array property', () => {
       it('Adds a new array', () => {
         // ARRANGE
         const target: TestItem = {
@@ -740,7 +740,7 @@ describe('patch', () => {
     });
   });
 
-  describe('object in index', () => {
+  describe('object in target index', () => {
     it('Deletes an existing value', () => {
       // ARRANGE
 
@@ -785,7 +785,7 @@ describe('patch', () => {
       expect(result).to.deep.equal(expected);
     });
 
-    describe('primitive value', () => {
+    describe('with primitive property value', () => {
       it('Adds a new value', () => {
         // ARRANGE
 
@@ -980,7 +980,7 @@ describe('patch', () => {
       });
     });
 
-    describe('object value', () => {
+    describe('with object property value', () => {
       it('Adds a new object', () => {
         // ARRANGE
         const key = 'QWERTY';
@@ -1250,7 +1250,7 @@ describe('patch', () => {
       });
     });
 
-    describe('index value', () => {
+    describe('with index property value', () => {
       it('Adds a new index', () => {
         // ARRANGE
         const key = 'QWERTY';
@@ -1552,7 +1552,7 @@ describe('patch', () => {
       });
     });
 
-    describe('primitive array', () => {
+    describe('with primitive array property', () => {
       it('Adds a new array', () => {
         // ARRANGE
         const key = 'QWERTY';
