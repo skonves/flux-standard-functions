@@ -40,7 +40,36 @@ function setOnObject<T>(
   payload: any,
   definition: Definition<T>,
 ): T {
-  return patch(target, { [key]: payload } as Patch<T>, definition);
+  const childDefinition = definition.getDefinitions(key);
+
+  if (childDefinition && childDefinition.object) {
+    const childPayload = childDefinition.object.getPayload(payload);
+    return typeof childPayload === 'undefined' || childPayload === null
+      ? target
+      : { ...(target as any), [key]: childPayload };
+  } else if (childDefinition && childDefinition.index) {
+    const childKeys = Object.keys(payload);
+
+    let hasSet = false;
+
+    const childResult = childKeys.reduce((acc, childKey) => {
+      const childPayload = childDefinition.index.getPayload(payload[childKey]);
+
+      if (typeof childPayload === 'undefined' || childPayload === null) {
+        return acc;
+      }
+
+      hasSet = true;
+      return { ...acc, [childKey]: childPayload };
+    }, {});
+
+    return hasSet ? { ...(target as any), [key]: childResult } : target;
+  } else if (childDefinition && childDefinition.isArray) {
+    const x = definition.getPatch({ [key]: payload } as Patch<T>);
+    return x && x[key] ? { ...(target as any), [key]: x[key] } : target;
+  } else {
+    return patch(target, { [key]: payload } as Patch<T>, definition);
+  }
 }
 
 function setInIndex<T>(
