@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Build simple, predictable reducers in Redux",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "prebuild": "npm run lint && rm -rf lib/*",
     "build": "tsc",
