@@ -1,12 +1,46 @@
 import { expect } from 'chai';
 
-import { Definition, Patch, setEach, Index } from '..';
+import {
+  Index,
+  define,
+  key as keyRule,
+  optional,
+  required,
+  objectOf,
+  indexOf,
+  array,
+  setEach,
+} from '..';
+
+type TestChildItem = {
+  id: string;
+  name: string;
+  value?: number;
+};
+
+const childDef = define<TestChildItem>({
+  id: keyRule(),
+  name: required(),
+  value: optional(),
+});
 
 type TestItem = {
   id: string;
   name: string;
   value?: number;
+  child?: TestChildItem;
+  children?: Index<TestChildItem>;
+  items?: number[];
 };
+
+const parentDef = define<TestItem>({
+  id: keyRule(),
+  name: required(),
+  value: optional(),
+  child: optional(objectOf(childDef)),
+  children: optional(indexOf(childDef)),
+  items: optional(array()),
+});
 
 describe('setEach', () => {
   describe('primitive array', () => {
@@ -52,12 +86,6 @@ describe('setEach', () => {
           name: 'name of b',
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -72,7 +100,7 @@ describe('setEach', () => {
       };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -97,12 +125,6 @@ describe('setEach', () => {
           name: 'new name of a',
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -116,13 +138,13 @@ describe('setEach', () => {
       };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
     });
 
-    it('No-ops when getKey returns falsy', () => {
+    it('No-ops when key is not included', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -135,31 +157,24 @@ describe('setEach', () => {
           name: 'name of b',
         },
       };
-      const payload: TestItem[] = [
+      const payload: any[] = [
         {
-          id: 'a',
           name: 'new name of a',
           value: 18,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => null,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
       expect(result).to.equal(target);
     });
 
-    it('No-ops when getPayload returns falsy', () => {
+    it('No-ops when payload item is invalid', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -172,24 +187,17 @@ describe('setEach', () => {
           name: 'name of b',
         },
       };
-      const payload: TestItem[] = [
+      const payload: any[] = [
         {
           id: 'a',
-          name: 'new name of a',
           value: 18,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -213,12 +221,6 @@ describe('setEach', () => {
           name: 'name of b',
         },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -233,7 +235,7 @@ describe('setEach', () => {
       };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -258,12 +260,6 @@ describe('setEach', () => {
           name: 'new name of a',
         },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -277,13 +273,13 @@ describe('setEach', () => {
       };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
     });
 
-    it('No-ops when getKey returns falsy', () => {
+    it('No-ops when key is not included', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -298,29 +294,22 @@ describe('setEach', () => {
       };
       const payload: Index<TestItem> = {
         a: {
-          id: 'a',
           name: 'new name of a',
           value: 18,
         },
-      };
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => null,
-        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
       expect(result).to.equal(target);
     });
 
-    it('No-ops when getKey does not match payload key', () => {
+    it('No-ops when item key does not match payload key', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -340,24 +329,18 @@ describe('setEach', () => {
           value: 18,
         },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => x as TestItem,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
       expect(result).to.equal(target);
     });
 
-    it('No-ops when getPayload returns falsy', () => {
+    it('No-ops when payload item is invalid', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -373,21 +356,14 @@ describe('setEach', () => {
       const payload: Index<TestItem> = {
         a: {
           id: 'a',
-          name: 'new name of a',
           value: 18,
         },
-      };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
       };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = setEach(target, payload, definition);
+      const result = setEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);

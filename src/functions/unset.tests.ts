@@ -1,13 +1,47 @@
 import { expect } from 'chai';
 
-import { Definition, unset, Index } from '..';
-import { DELETE_VALUE } from '../types';
+import {
+  DELETE_VALUE,
+  Index,
+  define,
+  key as keyRule,
+  optional,
+  required,
+  objectOf,
+  indexOf,
+  array,
+  unset,
+} from '..';
+
+type TestChildItem = {
+  id: string;
+  name: string;
+  value?: number;
+};
+
+const childDef = define<TestChildItem>({
+  id: keyRule(),
+  name: required(),
+  value: optional(),
+});
 
 type TestItem = {
   id: string;
   name: string;
   value?: number;
+  child?: TestChildItem;
+  children?: Index<TestChildItem>;
+  items?: number[];
 };
+
+const parentDef = define<TestItem>({
+  id: keyRule(),
+  name: required(),
+  value: optional(),
+  child: optional(objectOf(childDef)),
+  children: optional(indexOf(childDef)),
+  items: optional(array()),
+});
 
 describe('unset', () => {
   describe('primitive array', () => {
@@ -46,12 +80,6 @@ describe('unset', () => {
         value: 7,
       };
       const key = 'value';
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ [key]: DELETE_VALUE }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: TestItem = {
         id: 'QWERTY',
@@ -59,7 +87,7 @@ describe('unset', () => {
       };
 
       // ACT
-      const result = unset(target, key, definition);
+      const result = unset(target, key, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -72,17 +100,11 @@ describe('unset', () => {
         name: 'asdf',
       };
       const key = 'value';
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ [key]: DELETE_VALUE }),
-        getKey: x => null,
-        getDefinitions: key => null,
-      };
 
       const expected: TestItem = { ...target };
 
       // ACT
-      const result = unset(target, key, definition);
+      const result = unset(target, key, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -96,17 +118,11 @@ describe('unset', () => {
         name: 'asdf',
       };
       const key = 'id';
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => null,
-        getDefinitions: key => null,
-      };
 
       const expected: TestItem = { ...target };
 
       // ACT
-      const result = unset(target, key, definition);
+      const result = unset(target, key, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);

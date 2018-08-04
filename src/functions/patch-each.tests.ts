@@ -1,12 +1,48 @@
 import { expect } from 'chai';
 
-import { Definition, Patch, patchEach, DELETE_VALUE, Index } from '..';
+import {
+  Patch,
+  DELETE_VALUE,
+  Index,
+  define,
+  key,
+  optional,
+  required,
+  objectOf,
+  indexOf,
+  array,
+  patchEach,
+} from '..';
+
+type TestChildItem = {
+  id: string;
+  name: string;
+  value?: number;
+};
+
+const childDef = define<TestChildItem>({
+  id: key(),
+  name: required(),
+  value: optional(),
+});
 
 type TestItem = {
   id: string;
   name: string;
   value?: number;
+  child?: TestChildItem;
+  children?: Index<TestChildItem>;
+  items?: number[];
 };
+
+const parentDef = define<TestItem>({
+  id: key(),
+  name: required(),
+  value: optional(),
+  child: optional(objectOf(childDef)),
+  children: optional(indexOf(childDef)),
+  items: optional(array()),
+});
 
 describe('patch-each', () => {
   describe('from array', () => {
@@ -28,12 +64,6 @@ describe('patch-each', () => {
           value: 7,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => (x.id === 'a' ? { value: 7 } : null),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -48,7 +78,7 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -73,12 +103,6 @@ describe('patch-each', () => {
           value: 18,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => (x.id === 'a' ? { value: 18 } : null),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -93,7 +117,7 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -118,12 +142,6 @@ describe('patch-each', () => {
           value: DELETE_VALUE,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => (x.id === 'a' ? { value: DELETE_VALUE } : null),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -137,13 +155,13 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
     });
 
-    it('No-ops when payload is empty', () => {
+    it('No-ops when payload is an empty array', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -157,24 +175,18 @@ describe('patch-each', () => {
         },
       };
       const payload: Patch<TestItem>[] = [];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
       expect(result).to.equal(target);
     });
 
-    it('No-ops when patch is falsy', () => {
+    it('No-ops when all payload items are invalid', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -190,20 +202,13 @@ describe('patch-each', () => {
       const payload: Patch<TestItem>[] = [
         {
           id: 'a',
-          value: DELETE_VALUE,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -229,17 +234,11 @@ describe('patch-each', () => {
           value: 7,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -264,17 +263,11 @@ describe('patch-each', () => {
           value: DELETE_VALUE,
         },
       ];
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -298,12 +291,6 @@ describe('patch-each', () => {
       const payload: { [key: string]: Patch<TestItem> } = {
         a: { value: 7 },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ value: x.value }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -318,7 +305,7 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -340,12 +327,6 @@ describe('patch-each', () => {
       const payload: { [key: string]: Patch<TestItem> } = {
         a: { value: 18 },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ value: x.value }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -360,7 +341,7 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -382,12 +363,6 @@ describe('patch-each', () => {
       const payload: { [key: string]: Patch<TestItem> } = {
         a: { value: DELETE_VALUE },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ value: x.value }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = {
         a: {
@@ -401,7 +376,7 @@ describe('patch-each', () => {
       };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -421,17 +396,11 @@ describe('patch-each', () => {
         },
       };
       const payload = {};
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -452,24 +421,18 @@ describe('patch-each', () => {
         },
       };
       const payload = null;
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
       expect(result).to.equal(target);
     });
 
-    it('No-ops when patch is falsy', () => {
+    it('No-ops when all payload items are invalid', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {
@@ -482,19 +445,13 @@ describe('patch-each', () => {
         },
       };
       const payload: { [key: string]: Patch<TestItem> } = {
-        a: { value: 7 },
-      };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => null,
-        getKey: x => x.id,
-        getDefinitions: key => null,
+        a: { id: 'THE NEW ID' },
       };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -517,17 +474,11 @@ describe('patch-each', () => {
       const payload: { [key: string]: Patch<TestItem> } = {
         a: { value: 7 },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ value: x.value }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
@@ -549,17 +500,11 @@ describe('patch-each', () => {
       const payload: { [key: string]: Patch<TestItem> } = {
         a: { value: DELETE_VALUE },
       };
-      const definition: Definition<TestItem> = {
-        getPayload: x => null,
-        getPatch: x => ({ value: x.value }),
-        getKey: x => x.id,
-        getDefinitions: key => null,
-      };
 
       const expected: Index<TestItem> = { ...target };
 
       // ACT
-      const result = patchEach(target, payload, definition);
+      const result = patchEach(target, payload, parentDef);
 
       // ASSERT
       expect(result).to.deep.equal(expected);
