@@ -1,6 +1,13 @@
 import { Definition, Rule, Patch } from '.';
 import { DELETE_VALUE } from './types';
 
+/**
+ * Creates a definition for a type.  These definitions are required arguments for most of
+ * the Standard Functions. Any operation that adds a property not included in the definition
+ * will be ignored without throwing an error. Properties are ignored independently.
+ * @param rules An object that respresents the property and property rules for a given type.
+ * @returns Returns a Definition object.
+ */
 export function define<T>(rules: { [K in keyof T]: Rule }): Definition<T> {
   const keys = Object.keys(rules);
 
