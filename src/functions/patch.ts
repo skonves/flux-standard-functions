@@ -3,11 +3,43 @@ import { DELETE_VALUE, Primitive } from '../types';
 import { patchEach } from './patch-each';
 import { setEach } from './set-each';
 
+/**
+ * Adds, updates, or deletes properties on the `target` object using values
+ * from the `payload`.
+ * @param target The object to be patched.
+ * @param payload An object that contains the patch data. Properties and
+ * sub-properties must be included in the supplied `definition` and any of its
+ * sub-definitions.  Patch properties not included in the `definition` will
+ * be ignored. Values may be removed from the `target` object by using the
+ * `DELETE_VALUE` symbol.
+ * @param definition Defines the properties of the `target` being patched so
+ * that immutable properties are not updated, required properties are not
+ * removed, and extraneous properties are not added.
+ * @returns If `target` is patched, then an updated shallow clone of `target`
+ * is returned; otherwise, `target` is returned by reference.
+ */
 export function patch<T>(
   target: T,
   payload: Patch<T>,
   definition: Definition<T>,
 ): T;
+
+/**
+ * Adds, updates, or deletes properties on an object in the `target` Index using values
+ * from the `payload`.
+ * @param target The Index to be patched.
+ * @param key The key of the object within the Index.
+ * @param payload An object that contains the patch data. Properties and
+ * sub-properties must be included in the supplied `definition` and any of its
+ * sub-definitions.  Patch properties not included in the `definition` will
+ * be ignored. Values may be removed from the object in the `target` index by
+ * using the `DELETE_VALUE` symbol.
+ * @param definition Defines the properties of the object in the `target` index
+ * being patched so that immutable properties are not updated, required properties
+ * are not removed, and extraneous properties are not added.
+ * @returns If `target` is patched, then an updated shallow clone of `target`
+ * is returned; otherwise, `target` is returned by reference.
+ */
 export function patch<T>(
   target: Index<T>,
   key: string | number,
