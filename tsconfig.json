@@ -5,7 +5,7 @@
     "noImplicitReturns": true,
     "outDir": "lib",
     "sourceMap": true,
-    "target": "es6",
+    "target": "es3",
     "declaration": true
   },
   "include": ["src"]
