@@ -1,9 +1,13 @@
 import { Definition, Index } from '.';
 
 export function index<T>(values: T[], definition: Definition<T>): Index<T> {
-  throw new Error('method not implemented');
+  return values.reduce(
+    (acc, value) => ({ ...acc, [definition.getKey(value)]: value }),
+    {},
+  );
 }
 
 export function deindex<T>(values: Index<T>): T[] {
-  throw new Error('method not implemented');
+  const keys = Object.keys(values);
+  return keys.map(key => values[key]);
 }
