@@ -6,7 +6,8 @@
     "outDir": "lib",
     "sourceMap": true,
     "target": "es3",
-    "declaration": true
+    "declaration": true,
+    "removeComments": false
   },
   "include": ["src"]
 }
