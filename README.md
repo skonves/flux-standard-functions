@@ -49,23 +49,23 @@ The Standard Functions typically work with a combination of three parameters: `t
 
 Set provides the ability to either add or overwrite data. This is analogous to the "Create" CRUD operation. If a value being set already exists, then it will be overwritten. If the value being set does not exist then it is added. Any operations that set a value not inclued in the `definition` or that are defined as immutable will be ignored.
 
-Use [`set`](/src/functions/set.md) for single values and [`setEach`](/src/functions/set-each.md) for batch set operations.
+Use [`set`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/set.md) for single values and [`setEach`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/set-each.md) for batch set operations.
 
 ### Patch
 
 Patch provides the ability to update (or "upsert") data. This is similar the the "Update" CRUD operation. If a value being patched already exists, then it will be replaced. For complex properties, it will be partially updated with the properties in the `payload`. If the property did not already exist and is valid per the `definition` then it will be added.
 
-Use [`patch`](/src/functions/patch.md) for single patches and [`patchEach`](/src/functions/patch-each.md) for batch patch operations.
+Use [`patch`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/patch.md) for single patches and [`patchEach`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/patch-each.md) for batch patch operations.
 
 ### Unset
 
 Unset provides the ability to remove data. This is analogous to the "Delete" CRUD operation. If the valued being unset exists, then it is removed. If the value being unset does not exist or is specified by the `definition` to be required or immutable, then nothing happens.
 
-Use [`unset`](/src/functions/unset.md) to remove single values and [`unsetEach`](/src/functions/unset-each.md) for batch unset operations.
+Use [`unset`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/unset.md) to remove single values and [`unsetEach`](https://github.com/skonves/flux-standard-functions/tree/master/src/functions/unset-each.md) for batch unset operations.
 
 ## Definitions and Rules
 
-The Standard Functions use the `definition` parameter to validate changes. The [`define()`](/src/define.md) function is used to create the defintion for types:
+The Standard Functions use the `definition` parameter to validate changes. The [`define()`](https://github.com/skonves/flux-standard-functions/tree/master/src/define.md) function is used to create the defintion for types:
 
 Here is an example of defining a "User" object:
 
@@ -78,7 +78,7 @@ const userDefinition = define({
 });
 ```
 
-See the documentation on [Rules](/src/rules.md) for the various rules that can be used to create definitions.
+See the documentation on [Rules](https://github.com/skonves/flux-standard-functions/tree/master/src/rules.md) for the various rules that can be used to create definitions.
 
 ## Indexes
 
@@ -116,7 +116,7 @@ const userIndex = {
 };
 ```
 
-This package also provide a few helper functions to easily convert data between Indexes and Arrays. See the documentation on [Helpers](/src/helpers.md) for more information.
+This package also provide a few helper functions to easily convert data between Indexes and Arrays. See the documentation on [Helpers](https://github.com/skonves/flux-standard-functions/tree/master/src/helpers.md) for more information.
 
 ## Prior Art
 
