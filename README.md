@@ -120,7 +120,7 @@ This package also provide a few helper functions to easily convert data between 
 
 ## Prior Art
 
-### Redux Data Normaization
+### Redux Data Normalization
 
 The principles of Data Normalization frequently cited within this project heavily influenced its development. Like is recommended, Flux Standard Functions work well with a "flat" or normalized state.
 
