@@ -252,6 +252,28 @@ describe('set', () => {
         expect(result).to.deep.equal(expected);
       });
 
+      it('Adds a new empty value', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const key = 'children';
+        const payload = {};
+
+        const expected: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          children: {},
+        };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+      });
+
       it('Overwrites an existing index', () => {
         // ARRANGE
         const target: TestItem = {
@@ -266,6 +288,29 @@ describe('set', () => {
           id: 'QWERTY',
           name: 'asdf',
           children: { b: { id: 'b', name: 'new child name' } },
+        };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+      });
+
+      it('Overwrites an existing index with an empty value', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          children: { a: { id: 'a', name: 'child name' } },
+        };
+        const key = 'children';
+        const payload = {};
+
+        const expected: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          children: {},
         };
 
         // ACT
