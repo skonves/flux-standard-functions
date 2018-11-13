@@ -84,7 +84,7 @@ function setOnObject<T>(
   } else if (childDefinition && childDefinition.index) {
     const childKeys = Object.keys(payload);
 
-    let hasSet =
+    let shouldClone =
       !childKeys.length &&
       (!target[key] || Object.keys(target[key] as any).length);
 
@@ -95,11 +95,11 @@ function setOnObject<T>(
         return acc;
       }
 
-      hasSet = true;
+      shouldClone = true;
       return { ...acc, [childKey]: childPayload };
     }, {});
 
-    return hasSet ? { ...(target as any), [key]: childResult } : target;
+    return shouldClone ? { ...(target as any), [key]: childResult } : target;
   } else if (childDefinition && childDefinition.isArray) {
     const x = definition.getPatch({ [key]: payload } as Patch<T>);
     return x && x[key] ? { ...(target as any), [key]: x[key] } : target;
