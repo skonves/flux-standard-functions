@@ -84,7 +84,9 @@ function setOnObject<T>(
   } else if (childDefinition && childDefinition.index) {
     const childKeys = Object.keys(payload);
 
-    let hasSet = false;
+    let hasSet =
+      !childKeys.length &&
+      (!target[key] || Object.keys(target[key] as any).length);
 
     const childResult = childKeys.reduce((acc, childKey) => {
       const childPayload = childDefinition.index.getPayload(payload[childKey]);
