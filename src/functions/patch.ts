@@ -83,7 +83,7 @@ function patchObject<T>(
       if (childDefinitions && childDefinitions.index) {
         if (hasExistingValue) {
           const originalValue = result[key] as any;
-          const childPatch = patchValue[key];
+          const childPatch = patchValue[key] as any;
 
           const newValue = patchEach(
             originalValue,
@@ -96,7 +96,7 @@ function patchObject<T>(
           }
         } else {
           const originalValue = {};
-          const childPatch = patchValue[key];
+          const childPatch = patchValue[key] as any;
 
           const newValue = patchEach(
             originalValue,
@@ -112,7 +112,7 @@ function patchObject<T>(
       } else if (childDefinitions && childDefinitions.object) {
         if (hasExistingValue) {
           const originalValue = result[key];
-          const childPatch = patchValue[key];
+          const childPatch = patchValue[key] as any;
 
           const newValue = patch(
             originalValue,
@@ -126,7 +126,7 @@ function patchObject<T>(
           }
         } else {
           const childObject = childDefinitions.object.getPayload(
-            patchValue[key],
+            patchValue[key] as any,
           );
 
           if (childObject) {
@@ -137,7 +137,7 @@ function patchObject<T>(
       } else if (childDefinitions && childDefinitions.isArray) {
         if (hasExistingValue) {
           const originalValue = result[key] as any;
-          const childPatch = patchValue[key];
+          const childPatch = patchValue[key] as any;
 
           const newValue = setEach(originalValue, childPatch) as any;
 
@@ -146,11 +146,11 @@ function patchObject<T>(
             patched = true;
           }
         } else {
-          result[key] = patchValue[key];
+          result[key] = patchValue[key] as any;
           patched = true;
         }
       } else {
-        result[key] = patchValue[key];
+        result[key] = patchValue[key] as any;
         patched = true;
       }
     }
