@@ -211,9 +211,9 @@ describe('patch', () => {
           id: 'QWERTY',
           name: 'asdf',
         };
-        const payload: Patch<TestItem> = {
+        const payload = {
           child: { id: 'child_id' },
-        };
+        } as Patch<TestItem>;
 
         const expected: TestItem = { ...target };
 
@@ -1229,9 +1229,9 @@ describe('patch', () => {
             name: 'asdf',
           },
         };
-        const payload: Patch<TestItem> = {
+        const payload = ({
           items: '4,5',
-        };
+        } as any) as Patch<TestItem>;
 
         const expected: Index<TestItem> = { ...target };
 
