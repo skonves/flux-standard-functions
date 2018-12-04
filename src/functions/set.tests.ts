@@ -425,7 +425,7 @@ describe('set', () => {
       const definition: Definition<TestItem> = {
         getPayload: x => x as TestItem,
         getPatch: x => null,
-        getKey: x => x.id,
+        getKey: x => x.id as TestItem['id'],
         getDefinitions: key => null,
       };
 
@@ -467,7 +467,7 @@ describe('set', () => {
       const definition: Definition<TestItem> = {
         getPayload: x => x as TestItem,
         getPatch: x => null,
-        getKey: x => x.id,
+        getKey: x => x.id as TestItem['id'],
         getDefinitions: key => null,
       };
 
@@ -506,7 +506,7 @@ describe('set', () => {
       const definition: Definition<TestItem> = {
         getPayload: x => null,
         getPatch: x => null,
-        getKey: x => x.id,
+        getKey: x => x.id as TestItem['id'],
         getDefinitions: key => null,
       };
 
@@ -541,7 +541,7 @@ describe('set', () => {
       const definition: Definition<TestItem> = {
         getPayload: x => null,
         getPatch: x => null,
-        getKey: x => x.id,
+        getKey: x => x.id as TestItem['id'],
         getDefinitions: key => null,
       };
 
