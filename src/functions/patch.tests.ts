@@ -376,7 +376,7 @@ describe('patch', () => {
         const target: TestItem = {
           id: 'QWERTY',
           name: 'asdf',
-          children: { id: 'child_id', name: 'child name' },
+          children: { child_id: { id: 'child_id', name: 'child name' } },
         };
         const payload: Patch<TestItem> = {
           children: { a: { id: 'new child ID' } },
