@@ -296,7 +296,7 @@ describe('setEach', () => {
         a: {
           name: 'new name of a',
           value: 18,
-        },
+        } as TestItem,
       };
 
       const expected: Index<TestItem> = { ...target };
@@ -357,7 +357,7 @@ describe('setEach', () => {
         a: {
           id: 'a',
           value: 18,
-        },
+        } as TestItem,
       };
 
       const expected: Index<TestItem> = { ...target };
