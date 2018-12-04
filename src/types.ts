@@ -11,7 +11,7 @@ export interface Definition<T> {
     isArray?: boolean;
   };
 }
-export type Index<T> = { [key: string]: T } | { [key: number]: T };
+export type Index<T> = { [key: string]: T, [key: number]: T };
 export type Patch<T> = { [key in keyof T]?: T[key] | Patch<T[key]> | symbol };
 export type Rule<T = any> = {
   isKey: boolean;
