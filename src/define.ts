@@ -45,11 +45,16 @@ function createGetPayloadFunction<T>(
     const result = {};
 
     let hasAny = false;
+    let hasAnyRequred = false;
 
     for (const key of Object.keys(rules)) {
       const rule: Rule = rules[key];
       if (!rule) continue;
       if (payload[key] === DELETE_VALUE) return undefined;
+
+      if (rule.isReadonly) {
+        hasAnyRequred = true;
+      }
 
       if (typeof payload[key] === 'undefined' || payload[key] === null) {
         if (rule.isRequired) {
@@ -86,7 +91,7 @@ function createGetPayloadFunction<T>(
       }
     }
 
-    return hasAny ? (result as T) : undefined;
+    return hasAny || !hasAnyRequred ? (result as T) : undefined;
   };
 }
 
