@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "lts/boron"  #6.x  - Maintenance LTS
-  - "lts/carbon" #8.x  - Active LTS
-  - "stable"     #10.x - Current Release
+  - 'lts/carbon'  #8.x  - Maintenance LTS
+  - 'lts/*'       #10.x - Active LTS
+  - 'stable'      #12.x - Current Release
 before_install:
   - npm i -g npm@^6
 install:
