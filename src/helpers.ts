@@ -1,4 +1,5 @@
 import { Definition, Index } from '.';
+import { WideWeakMap } from './wide-weak-map';
 
 /**
  * Converts an array of objects to an Index whose key is defined by the
@@ -10,17 +11,37 @@ import { Definition, Index } from '.';
  * @returns An Index object.
  */
 export function index<T>(values: T[], definition: Definition<T>): Index<T> {
-  return values.reduce(
-    (acc, value) => ({ ...acc, [definition.getKey(value)]: value }),
-    {},
-  );
+  if (!indexMap.has(values, definition)) {
+    const result = {};
+    const length = values.length;
+    for (let i = 0; i < length; i++) {
+      const v = values[i];
+      result[definition.getKey(v)] = v;
+    }
+
+    indexMap.set([values, definition], result);
+  }
+
+  return indexMap.get(values, definition) as any;
 }
+const indexMap = new WideWeakMap();
 
 /**
  * Returns all of the values of an Index as an array objects.
  * @param values An index of objects
  */
 export function deindex<T>(values: Index<T>): T[] {
-  const keys = Object.keys(values);
-  return keys.map(key => values[key]);
+  if (!deindexMap.has(values)) {
+    const keys = Object.keys(values);
+    const length = keys.length;
+    const result = new Array(length);
+    for (let i = 0; i < length; i++) {
+      result[i] = values[keys[i]];
+    }
+
+    deindexMap.set(values, result);
+  }
+
+  return deindexMap.get(values);
 }
+const deindexMap = new WeakMap();
