@@ -80,10 +80,11 @@ function createGetPayloadFunction<T>(
           }
         } else if (rule.index) {
           hasAny = true;
-          result[key] = Object.keys(payload[key]).reduce((acc, childKey) => {
+          result[key] = {};
+          for (const childKey in payload[key]) {
             const childPayload = rule.index.getPayload(payload[key][childKey]);
-            return childPayload ? { ...acc, [childKey]: childPayload } : acc;
-          }, {});
+            if (childPayload) result[key][childKey] = childPayload;
+          }
         } else {
           hasAny = true;
           result[key] = payload[key];

@@ -81,15 +81,21 @@ function setFromArray<T>(
   payload: T[],
   definition: Definition<T>,
 ): Index<T> {
-  return payload.reduce((acc, item) => {
+  const updates: Index<T> = {};
+
+  for (const item of payload) {
     const key = definition.getKey(item);
-    if (!key) return acc;
+    if (!key) continue;
 
     const validItem = definition.getPayload(item);
-    if (!validItem) return acc;
+    if (!validItem) continue;
 
-    return { ...acc, [key]: validItem };
-  }, target);
+    updates[key] = validItem;
+  }
+
+  return Object.keys(updates).length
+    ? Object.assign({}, target, updates)
+    : target;
 }
 
 function setFromIndex<T>(
@@ -98,16 +104,19 @@ function setFromIndex<T>(
   definition: Definition<T>,
 ): Index<T> {
   if (!payload) return target;
+  const updates: Index<T> = {};
 
-  const keys = Object.keys(payload);
-
-  return keys.reduce((acc, key) => {
+  for (const key in payload) {
     const validItem = definition.getPayload(payload[key]);
-    if (!validItem) return acc;
+    if (!validItem) continue;
 
     const keyFromDefinition = definition.getKey(validItem);
-    if (key !== keyFromDefinition) return acc;
+    if (key !== keyFromDefinition) continue;
 
-    return { ...acc, [key]: validItem };
-  }, target);
+    updates[key] = validItem;
+  }
+
+  return Object.keys(updates).length
+    ? Object.assign({}, target, updates)
+    : target;
 }

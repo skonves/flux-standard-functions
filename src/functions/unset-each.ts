@@ -41,5 +41,11 @@ function unsetFromIndex<T>(
 
   if (finalKeys.length === originalKeys.length) return target;
 
-  return finalKeys.reduce((acc, key) => ({ ...acc, [key]: target[key] }), {});
+  const result: Index<T> = {};
+
+  for (const key of finalKeys) {
+    result[key] = target[key];
+  }
+
+  return result;
 }

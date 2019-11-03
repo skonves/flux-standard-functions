@@ -64,18 +64,24 @@ function patchEachFromArray<T>(
 ): Index<T> {
   if (!payload.length) return target;
 
-  return payload.reduce((acc, item) => {
+  const updates: Index<T> = {};
+
+  for (const item of payload) {
     const key = definition.getKey(item);
-    if (!key) return acc;
+    if (!key) continue;
 
     const existingItem = target[key];
-    if (!existingItem) return acc;
+    if (!existingItem) continue;
 
     const patchedItem = patch(existingItem, item, definition);
-    if (patchedItem === existingItem) return acc;
+    if (patchedItem === existingItem) continue;
 
-    return { ...(acc as any), [key]: patchedItem };
-  }, target);
+    updates[key] = patchedItem;
+  }
+
+  return Object.keys(updates).length
+    ? Object.assign({}, target, updates)
+    : target;
 }
 
 function patchEachFromIndex<T>(
@@ -85,21 +91,25 @@ function patchEachFromIndex<T>(
 ): Index<T> {
   if (!payload) return target;
 
-  const keys = Object.keys(payload);
-  if (!keys) return target;
+  const updates: Index<T> = {};
 
-  return keys.reduce((acc, key) => {
+  for (const key in payload) {
     const existingItem = target[key];
     if (!existingItem) {
       const newItem = definition.getPayload(payload[key]);
-      if (!newItem) return acc;
+      if (!newItem) continue;
 
-      return { ...(acc as any), [key]: newItem };
+      updates[key] = newItem;
+      continue;
     }
 
     const patchedItem = patch(existingItem, payload[key], definition);
-    if (patchedItem === existingItem) return acc;
+    if (patchedItem === existingItem) continue;
 
-    return { ...(acc as any), [key]: patchedItem };
-  }, target);
+    updates[key] = patchedItem;
+  }
+
+  return Object.keys(updates).length
+    ? Object.assign({}, target, updates)
+    : target;
 }
