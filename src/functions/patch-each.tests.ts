@@ -161,6 +161,56 @@ describe('patch-each', () => {
       expect(result).to.deep.equal(expected);
     });
 
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: Patch<TestItem>[] = undefined;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = patchEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: Patch<TestItem>[] = null;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = patchEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
     it('No-ops when payload is an empty array', () => {
       // ARRANGE
       const target: Index<TestItem> = {
@@ -407,7 +457,32 @@ describe('patch-each', () => {
       expect(result).to.equal(target);
     });
 
-    it('No-ops when payload is falsy', () => {
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload = undefined;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = patchEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {

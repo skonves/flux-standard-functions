@@ -54,6 +54,32 @@ describe('set', () => {
       expect(result).to.have.members([1, 2, 3, 4]);
     });
 
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = undefined;
+
+      // ACT
+      const result = set(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = null;
+
+      // ACT
+      const result = set(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
     it('No-ops when value already exists', () => {
       // ARRANGE
       const target = [1, 2, 3];
@@ -121,6 +147,44 @@ describe('set', () => {
 
         // ASSERT
         expect(result).to.deep.equal(expected);
+      });
+
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const key = 'id';
+        const payload = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when payload is null', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const key = 'id';
+        const payload = null;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
       });
 
       it('No-ops when setting an immutable value', () => {
@@ -207,6 +271,44 @@ describe('set', () => {
 
         // ASSERT
         expect(result).to.deep.equal(expected);
+      });
+
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const key = 'child';
+        const payload = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when payload is null', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const key = 'child';
+        const payload = null;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
       });
 
       it('No-ops when new object is invalid', () => {
@@ -320,6 +422,46 @@ describe('set', () => {
         expect(result).to.deep.equal(expected);
       });
 
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          children: { a: { id: 'a', name: 'child name' } },
+        };
+        const key = 'children';
+        const payload = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when payload is null', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          children: { a: { id: 'a', name: 'child name' } },
+        };
+        const key = 'children';
+        const payload = null;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
       it('No-ops when new index is invalid', () => {
         // ARRANGE
         const target: TestItem = {
@@ -387,7 +529,27 @@ describe('set', () => {
         expect(result).to.deep.equal(expected);
       });
 
-      it('No-ops when new array is falsy', () => {
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          items: [1, 2, 3],
+        };
+        const key = 'items';
+        const payload = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = set(target, key, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when new array is null', () => {
         // ARRANGE
         const target: TestItem = {
           id: 'QWERTY',
@@ -489,7 +651,38 @@ describe('set', () => {
       expect(result).to.deep.equal(expected);
     });
 
-    it('No-ops when payload is falsy', () => {
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+        },
+        b: {
+          id: 'b',
+          name: 'original name of b',
+          value: 7,
+        },
+      };
+      const payload = undefined;
+      const definition: Definition<TestItem> = {
+        getPayload: x => null,
+        getPatch: x => null,
+        getKey: x => x.id,
+        getDefinitions: key => null,
+      };
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = set(target, payload, definition);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
       // ARRANGE
       const target: Index<TestItem> = {
         a: {

@@ -57,6 +57,32 @@ describe('unset', () => {
       expect(result).to.have.members([1, 2]);
     });
 
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = undefined;
+
+      // ACT
+      const result = unset(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = null;
+
+      // ACT
+      const result = unset(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
     it('No-ops when value did not exist', () => {
       // ARRANGE
       const target = [1, 2, 3];
@@ -91,6 +117,42 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+    });
+
+    it('No-ops when key is undefined', () => {
+      // ARRANGE
+      const target: TestItem = {
+        id: 'QWERTY',
+        name: 'asdf',
+      };
+      const key = undefined;
+
+      const expected: TestItem = { ...target };
+
+      // ACT
+      const result = unset(target, key, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when key is null', () => {
+      // ARRANGE
+      const target: TestItem = {
+        id: 'QWERTY',
+        name: 'asdf',
+      };
+      const key = null;
+
+      const expected: TestItem = { ...target };
+
+      // ACT
+      const result = unset(target, key, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops if value is not found', () => {
@@ -158,6 +220,54 @@ describe('unset', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+    });
+
+    it('No-ops when key is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'asdf',
+        },
+        b: {
+          id: 'b',
+          name: 'asdf',
+        },
+      };
+      const key = undefined;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = unset(target, key);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when key is null', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'asdf',
+        },
+        b: {
+          id: 'b',
+          name: 'asdf',
+        },
+      };
+      const key = null;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = unset(target, key);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when the key does not match an item', () => {

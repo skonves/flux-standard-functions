@@ -68,6 +68,32 @@ describe('setEach', () => {
       expect(result).to.have.members([1, 2, 3]);
       expect(result).to.equal(target);
     });
+
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = undefined;
+
+      // ACT
+      const result = setEach(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = null;
+
+      // ACT
+      const result = setEach(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
   });
 
   describe('from array', () => {
@@ -142,6 +168,56 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+    });
+
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'original name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: any[] = undefined;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = setEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'original name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: any[] = null;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = setEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when key is not included', () => {
@@ -277,6 +353,56 @@ describe('setEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+    });
+
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'original name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: Index<TestItem> = undefined;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = setEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'original name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload: Index<TestItem> = null;
+
+      const expected: Index<TestItem> = { ...target };
+
+      // ACT
+      const result = setEach(target, payload, parentDef);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when key is not included', () => {
