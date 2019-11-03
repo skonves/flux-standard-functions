@@ -60,6 +60,8 @@ function setInPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T[],
 ): T[] {
+  if (typeof payload === 'undefined' || payload === null) return target;
+
   const set = new Set(target);
 
   let added = false;

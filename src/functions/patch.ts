@@ -59,6 +59,8 @@ function patchObject<T>(
   payload: Patch<T>,
   definition: Definition<T>,
 ): T {
+  if (typeof payload === 'undefined' || payload === null) return target;
+
   const patchValue = definition.getPatch(payload);
 
   if (!patchValue) return target;
@@ -165,6 +167,8 @@ function patchIndex<T>(
   payload: Patch<T>,
   definition: Definition<T>,
 ): Index<T> {
+  if (typeof payload === 'undefined' || payload === null) return target;
+
   const item = target[key];
 
   if (!item) return target;

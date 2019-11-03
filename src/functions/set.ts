@@ -61,6 +61,8 @@ function setInPrimitiveArray<T extends Primitive>(
   target: T[],
   payload: T,
 ): T[] {
+  if (typeof payload === 'undefined' || payload === null) return target;
+
   const originalSet = new Set(target);
 
   return originalSet.has(payload)
@@ -74,6 +76,8 @@ function setOnObject<T>(
   payload: any,
   definition: Definition<T>,
 ): T {
+  if (typeof payload === 'undefined' || payload === null) return target;
+
   const childDefinition = definition.getDefinitions(key);
 
   if (childDefinition && childDefinition.object) {
