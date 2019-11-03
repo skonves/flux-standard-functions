@@ -84,7 +84,7 @@ function setOnObject<T>(
     const childPayload = childDefinition.object.getPayload(payload);
     return typeof childPayload === 'undefined' || childPayload === null
       ? target
-      : { ...(target as any), [key]: childPayload };
+      : Object.assign({}, target, { [key]: childPayload }); // { ...(target as any), [key]: childPayload };
   } else if (childDefinition && childDefinition.index) {
     const childKeys = Object.keys(payload);
 
@@ -92,21 +92,25 @@ function setOnObject<T>(
       !childKeys.length &&
       (!target[key] || Object.keys(target[key] as any).length);
 
-    const childResult = childKeys.reduce((acc, childKey) => {
+    const childResult = {};
+
+    for (const childKey of childKeys) {
       const childPayload = childDefinition.index.getPayload(payload[childKey]);
 
       if (typeof childPayload === 'undefined' || childPayload === null) {
-        return acc;
+        continue;
       }
 
       shouldClone = true;
-      return { ...acc, [childKey]: childPayload };
-    }, {});
+      childResult[childKey] = childPayload;
+    }
 
-    return shouldClone ? { ...(target as any), [key]: childResult } : target;
+    return shouldClone
+      ? Object.assign({}, target, { [key]: childResult })
+      : target;
   } else if (childDefinition && childDefinition.isArray) {
     const x = definition.getPatch({ [key]: payload } as Patch<T>);
-    return x && x[key] ? { ...(target as any), [key]: x[key] } : target;
+    return x && x[key] ? Object.assign({}, target, { [key]: x[key] }) : target;
   } else {
     return patch(target, { [key]: payload } as Patch<T>, definition);
   }
@@ -125,5 +129,5 @@ function setInIndex<T>(
   const key = definition.getKey(payload);
   if (!key) return target;
 
-  return { ...target, [key]: validItem };
+  return Object.assign({}, target, { [key]: validItem });
 }

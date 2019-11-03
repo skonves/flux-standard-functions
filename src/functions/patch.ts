@@ -66,7 +66,7 @@ function patchObject<T>(
   if (!patchValue) return target;
 
   let patched = false;
-  const result: T = { ...(target as any) };
+  const result: T = Object.assign({}, target);
 
   for (const key in patchValue) {
     const hasExistingValue = typeof result[key] !== 'undefined';
@@ -177,5 +177,5 @@ function patchIndex<T>(
 
   if (item === patchedItem) return target;
 
-  return { ...target, [key]: patchedItem };
+  return Object.assign({}, target, { [key]: patchedItem });
 }

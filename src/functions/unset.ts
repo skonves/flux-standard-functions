@@ -36,7 +36,8 @@ function unsetFromObject<T>(
 function unsetFromIndex<T>(target: Index<T>, key: string): Index<T> {
   if (!target[key]) return target;
 
-  const { [key]: removed, ...rest } = target;
+  const result = Object.assign({}, target);
+  delete result[key];
 
-  return rest;
+  return result;
 }
