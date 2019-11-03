@@ -22,6 +22,32 @@ describe('unsetEach', () => {
       expect(result).to.have.members([1, 2]);
     });
 
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = undefined;
+
+      // ACT
+      const result = unsetEach(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target = [1, 2, 3];
+      const payload = null;
+
+      // ACT
+      const result = unsetEach(target, payload);
+
+      // ASSERT
+      expect(result).to.have.members([1, 2, 3]);
+      expect(result).to.equal(target);
+    });
+
     it('No-ops when values do not exist', () => {
       // ARRANGE
       const target = [1, 2, 3];
@@ -36,7 +62,7 @@ describe('unsetEach', () => {
     });
   });
 
-  describe('primitive array', () => {
+  describe('index', () => {
     it('Removes existing items', () => {
       // ARRANGE
       const target: Index<TestItem> = {
@@ -64,6 +90,56 @@ describe('unsetEach', () => {
 
       // ASSERT
       expect(result).to.deep.equal(expected);
+    });
+
+    it('No-ops when payload is undefined', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload = undefined;
+
+      const expected = { ...target };
+
+      // ACT
+      const result = unsetEach(target, payload);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
+    });
+
+    it('No-ops when payload is null', () => {
+      // ARRANGE
+      const target: Index<TestItem> = {
+        a: {
+          id: 'a',
+          name: 'name of a',
+          value: 7,
+        },
+        b: {
+          id: 'b',
+          name: 'name of b',
+        },
+      };
+      const payload = null;
+
+      const expected = { ...target };
+
+      // ACT
+      const result = unsetEach(target, payload);
+
+      // ASSERT
+      expect(result).to.deep.equal(expected);
+      expect(result).to.equal(target);
     });
 
     it('No-ops when values do not exist', () => {

@@ -94,6 +94,44 @@ describe('patch', () => {
         expect(result).to.deep.equal(expected);
       });
 
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          value: 7,
+        };
+        const payload: Patch<TestItem> = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = patch(target, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when payload is null', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+          value: 7,
+        };
+        const payload: Patch<TestItem> = null;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = patch(target, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
       it('No-ops when value cannot be deleted', () => {
         // ARRANGE
         const target: TestItem = {
@@ -203,6 +241,42 @@ describe('patch', () => {
 
         // ASSERT
         expect(result).to.deep.equal(expected);
+      });
+
+      it('No-ops when payload is undefined', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const payload: Patch<TestItem> = undefined;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = patch(target, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
+      });
+
+      it('No-ops when payload is null', () => {
+        // ARRANGE
+        const target: TestItem = {
+          id: 'QWERTY',
+          name: 'asdf',
+        };
+        const payload: Patch<TestItem> = null;
+
+        const expected: TestItem = { ...target };
+
+        // ACT
+        const result = patch(target, payload, parentDef);
+
+        // ASSERT
+        expect(result).to.deep.equal(expected);
+        expect(result).to.equal(target);
       });
 
       it('No-ops when new object is invalied', () => {
