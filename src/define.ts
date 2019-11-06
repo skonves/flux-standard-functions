@@ -8,7 +8,9 @@ import { DELETE_VALUE } from './types';
  * @param rules An object that respresents the property and property rules for a given type.
  * @returns Returns a Definition object.
  */
-export function define<T>(rules: { [K in keyof T]: Rule }): Definition<T> {
+export function define<T = any>(
+  rules: { [K in keyof T]: Rule },
+): Definition<T> {
   const keys = Object.keys(rules);
 
   const keyName = keys.find(key => rules[key].isKey);
