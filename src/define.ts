@@ -9,7 +9,7 @@ import { DELETE_VALUE } from './types';
  * @returns Returns a Definition object.
  */
 export function define<T = any>(
-  rules: { [K in keyof T]: Rule },
+  rules: { [K in keyof Record<keyof T, any>]: Rule },
 ): Definition<T> {
   const keys = Object.keys(rules);
 
