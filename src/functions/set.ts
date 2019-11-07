@@ -80,12 +80,12 @@ function setOnObject<T>(
 
   const childDefinition = definition.getDefinitions(key);
 
-  if (childDefinition && childDefinition.object) {
+  if (childDefinition?.object) {
     const childPayload = childDefinition.object.getPayload(payload);
     return typeof childPayload === 'undefined' || childPayload === null
       ? target
       : Object.assign({}, target, { [key]: childPayload }); // { ...(target as any), [key]: childPayload };
-  } else if (childDefinition && childDefinition.index) {
+  } else if (childDefinition?.index) {
     const childKeys = Object.keys(payload);
 
     let shouldClone =
@@ -108,7 +108,7 @@ function setOnObject<T>(
     return shouldClone
       ? Object.assign({}, target, { [key]: childResult })
       : target;
-  } else if (childDefinition && childDefinition.isArray) {
+  } else if (childDefinition?.isArray) {
     const x = definition.getPatch({ [key]: payload } as Patch<T>);
     return x && x[key] ? Object.assign({}, target, { [key]: x[key] }) : target;
   } else {

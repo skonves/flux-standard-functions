@@ -82,7 +82,7 @@ function patchObject<T>(
     } else {
       const childDefinitions = definition.getDefinitions(key);
 
-      if (childDefinitions && childDefinitions.index) {
+      if (childDefinitions?.index) {
         if (hasExistingValue) {
           const originalValue = result[key] as any;
           const childPatch = patchValue[key];
@@ -111,7 +111,7 @@ function patchObject<T>(
             patched = true;
           }
         }
-      } else if (childDefinitions && childDefinitions.object) {
+      } else if (childDefinitions?.object) {
         if (hasExistingValue) {
           const originalValue = result[key];
           const childPatch = patchValue[key];
@@ -136,7 +136,7 @@ function patchObject<T>(
             patched = true;
           }
         }
-      } else if (childDefinitions && childDefinitions.isArray) {
+      } else if (childDefinitions?.isArray) {
         if (hasExistingValue) {
           const originalValue = result[key] as any;
           const childPatch = patchValue[key];
